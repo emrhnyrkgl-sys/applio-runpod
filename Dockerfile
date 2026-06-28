@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     libasound2-dev \
     iproute2 \
     procps \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --break-system-packages uv
