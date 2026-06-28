@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install --break-system-packages -U pip setuptools wheel uv
+RUN python3 -m pip install --break-system-packages uv
 
 WORKDIR /opt
 
