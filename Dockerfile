@@ -3,6 +3,8 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV TERM=xterm
+ENV UV_HTTP_TIMEOUT=300
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -32,7 +34,13 @@ RUN git clone https://github.com/IAHispano/Applio.git /opt/Applio
 
 WORKDIR /opt/Applio
 
-RUN chmod +x run-install.sh run-applio.sh && ./run-install.sh
+RUN uv venv .venv --python 3.12
+
+RUN . .venv/bin/activate && \
+    uv pip install python-ffmpeg && \
+    uv pip install -r requirements.txt \
+      --extra-index-url https://download.pytorch.org/whl/cu128 \
+      --index-strategy unsafe-best-match
 
 RUN . .venv/bin/activate && \
     uv pip install --reinstall --index-url https://download.pytorch.org/whl/cu128 torch torchvision torchaudio
